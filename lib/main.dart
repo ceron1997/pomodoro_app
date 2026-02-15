@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pomodoro_app/config/theme/app_theme.dart';
 import 'package:pomodoro_app/presentation/providers/theme_provider.dart';
 import 'package:pomodoro_app/presentation/screens/home_screen.dart';
 

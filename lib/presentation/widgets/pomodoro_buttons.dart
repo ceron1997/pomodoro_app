@@ -22,6 +22,16 @@ class PomodoroButtons extends ConsumerWidget {
 
         const SizedBox(width: 40),
 
+        // PAUSA
+        IconButton(
+          onPressed: () => ref.read(pomodoroProvider.notifier).pause(),
+          iconSize: 40,
+          icon: const Icon(Icons.pause),
+          color: theme.colorScheme.primary,
+        ),
+
+        const SizedBox(width: 40),
+
         // START
         ElevatedButton.icon(
           onPressed: () => ref.read(pomodoroProvider.notifier).start(),

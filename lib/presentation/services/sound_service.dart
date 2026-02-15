@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final soundServiceProvider = Provider<SoundService>((ref) {
@@ -15,7 +16,9 @@ class SoundService {
         volume: 1.0,
       );
     } catch (e) {
-      print('Error reproduciendo sonido: $e');
+      if (kDebugMode) {
+        print('Error reproduciendo sonido: $e');
+      }
     }
   }
 }

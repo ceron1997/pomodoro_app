@@ -1,7 +1,24 @@
 import 'dart:async';
 // ignore: depend_on_referenced_packages
+import 'package:flutter/material.dart';
 import 'package:pomodoro_app/presentation/services/sound_service.dart';
 import 'package:riverpod/riverpod.dart';
+
+const SessionPomodoro = 'pomodoro';
+const SessionShortBreak = 'short_break';
+const SessionLongBreak = 'long_break';
+
+const Map<String, String> sessionLabels = {
+  SessionPomodoro: 'Pomodoro',
+  SessionShortBreak: 'Pausa corta',
+  SessionLongBreak: 'Pausa larga',
+};
+
+const Map<String, IconData> sessionIcons = {
+  SessionPomodoro: Icons.work_history,
+  SessionShortBreak: Icons.coffee,
+  SessionLongBreak: Icons.coffee_maker,
+};
 
 class PomodoroState {
   final int totalSeconds; // ex: 25 * 60
@@ -52,7 +69,7 @@ class PomodoroNotifier extends Notifier<PomodoroState> {
       totalSeconds: 25 * 60,
       remainingSeconds: 25 * 60,
       isRunning: false,
-      sessionType: 'Pomodoro',
+      sessionType: SessionPomodoro,
     );
   }
 
@@ -119,10 +136,10 @@ class PomodoroNotifier extends Notifier<PomodoroState> {
     int seconds;
 
     switch (type) {
-      case "Short_Break":
-        seconds = 5 * 1;
+      case SessionShortBreak:
+        seconds = 5 * 60;
         break;
-      case "Long_Break":
+      case SessionLongBreak:
         seconds = 15 * 60;
         break;
       default:

@@ -15,21 +15,23 @@ class SessionSelector extends ConsumerWidget {
       children: [
         _buildButton(
           theme,
-          "Pomodoro",
-          active == "Pomodoro",
-          () => ref.read(pomodoroProvider.notifier).setSession("Pomodoro"),
+          sessionLabels[SessionPomodoro]!,
+          active == SessionPomodoro,
+          () => ref.read(pomodoroProvider.notifier).setSession(SessionPomodoro),
         ),
         _buildButton(
           theme,
-          "Short Break",
-          active == "Short_Break",
-          () => ref.read(pomodoroProvider.notifier).setSession("Short_Break"),
+          sessionLabels[SessionShortBreak]!,
+          active == SessionShortBreak,
+          () =>
+              ref.read(pomodoroProvider.notifier).setSession(SessionShortBreak),
         ),
         _buildButton(
           theme,
-          "Long Break",
-          active == "Long_Break",
-          () => ref.read(pomodoroProvider.notifier).setSession("Long_Break"),
+          sessionLabels[SessionLongBreak]!,
+          active == SessionLongBreak,
+          () =>
+              ref.read(pomodoroProvider.notifier).setSession(SessionLongBreak),
         ),
       ],
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodoro_app/config/theme/app_theme.dart';
 
@@ -8,6 +9,9 @@ class ThemeNotifier extends StateNotifier<AppTheme> {
   ThemeNotifier() : super(AppTheme());
 
   void toggleDarkMode() {
+    if (kDebugMode) {
+      print('this is the current theme: ${state.isDarkmode}');
+    }
     state = state.copyWith(isDarkmode: !state.isDarkmode);
   }
 
