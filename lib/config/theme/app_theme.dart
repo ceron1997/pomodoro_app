@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const colorList = <Color>[
+  Color.fromARGB(255, 91, 82, 76),
   Colors.blue,
   Colors.teal,
   Colors.green,
@@ -24,8 +25,6 @@ class AppTheme {
         colorSchemeSeed: colorList[selectedColor],
         appBarTheme: const AppBarTheme(centerTitle: false),
       );
-
-
 
   AppTheme copyWith({int? selectedColor, bool? isDarkmode}) => AppTheme(
         selectedColor: selectedColor ?? this.selectedColor,
