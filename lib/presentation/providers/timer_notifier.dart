@@ -1,75 +1,71 @@
 import 'dart:async';
-// ignore: depend_on_referenced_packages
 import 'package:flutter/material.dart';
-import 'package:pomodoro_app/presentation/services/sound_service.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pomodoro_app/presentation/providers/settings_provider.dart';
+import 'package:pomodoro_app/domain/entities/pomodoro.dart';
+import 'package:pomodoro_app/domain/services/notification_service.dart';
+import 'package:pomodoro_app/presentation/providers/notification_provider.dart';
 
-const SessionPomodoro = 'pomodoro';
-const SessionShortBreak = 'short_break';
-const SessionLongBreak = 'long_break';
+// Este archivo define el `PomodoroNotifier`, que gestiona el estado del temporizador Pomodoro,
+// incluyendo la lógica para iniciar, pausar, reiniciar y
+// cambiar entre sesiones de trabajo y descanso.
 
-const Map<String, String> sessionLabels = {
-  SessionPomodoro: 'Pomodoro',
-  SessionShortBreak: 'Pausa corta',
-  SessionLongBreak: 'Pausa larga',
+const sessionPomodoro = SessionType.pomodoro;
+const sessionShortBreak = SessionType.shortBreak;
+const sessionLongBreak = SessionType.longBreak;
+
+const Map<SessionType, String> sessionLabels = {
+  sessionPomodoro: 'Pomodoro',
+  sessionShortBreak: 'Pausa corta',
+  sessionLongBreak: 'Pausa larga',
 };
 
-const Map<String, IconData> sessionIcons = {
-  SessionPomodoro: Icons.work_history,
-  SessionShortBreak: Icons.coffee,
-  SessionLongBreak: Icons.coffee_maker,
+const Map<SessionType, IconData> sessionIcons = {
+  sessionPomodoro: Icons.work_history,
+  sessionShortBreak: Icons.coffee,
+  sessionLongBreak: Icons.coffee_maker,
 };
 
-class PomodoroState {
-  final int totalSeconds; // ex: 25 * 60
-  final int remainingSeconds; // segundos restantes
-  final bool isRunning;
-  final String sessionType; // "Pomodoro" | "Short Break" | "Long Break"
+// Domain entity `Pomodoro` moved to `lib/domain/entities/pomodoro.dart`
 
-  const PomodoroState({
-    required this.totalSeconds,
-    required this.remainingSeconds,
-    required this.isRunning,
-    required this.sessionType,
-  });
-
-  double get progress => 1 - (remainingSeconds / totalSeconds);
-
-  String get formattedTime {
-    final minutes = remainingSeconds ~/ 60;
-    final seconds = remainingSeconds % 60;
-    return "$minutes:${seconds.toString().padLeft(2, '0')}";
-  }
-
-  PomodoroState copyWith({
-    int? totalSeconds,
-    int? remainingSeconds,
-    bool? isRunning,
-    String? sessionType,
-  }) {
-    return PomodoroState(
-      totalSeconds: totalSeconds ?? this.totalSeconds,
-      remainingSeconds: remainingSeconds ?? this.remainingSeconds,
-      isRunning: isRunning ?? this.isRunning,
-      sessionType: sessionType ?? this.sessionType,
-    );
-  }
-}
-
-class PomodoroNotifier extends Notifier<PomodoroState> {
+class PomodoroNotifier extends Notifier<Pomodoro> {
   Timer? _timer;
-  late final SoundService _soundService;
+  NotificationService get _notificationService =>
+      ref.read(notificationServiceProvider);
 
   @override
-  PomodoroState build() {
-    // Obtener el servicio aquí
-    _soundService = ref.read(soundServiceProvider);
+  Pomodoro build() {
+    final settings = ref.read(settingsProvider);
 
-    return PomodoroState(
-      totalSeconds: 25 * 60,
-      remainingSeconds: 25 * 60,
+    final seconds = settings.pomodoroDuration * 60;
+
+    ref.listen(settingsProvider, (previous, next) {
+      if (state.isRunning) return;
+
+      int newSeconds;
+
+      switch (state.sessionType) {
+        case sessionShortBreak:
+          newSeconds = next.shortBreakDuration * 60;
+          break;
+        case sessionLongBreak:
+          newSeconds = next.longBreakDuration * 60;
+          break;
+        default:
+          newSeconds = next.pomodoroDuration * 60;
+      }
+
+      state = state.copyWith(
+        totalSeconds: newSeconds,
+        remainingSeconds: newSeconds,
+      );
+    });
+
+    return Pomodoro(
+      totalSeconds: seconds,
+      remainingSeconds: seconds,
       isRunning: false,
-      sessionType: SessionPomodoro,
+      sessionType: sessionPomodoro,
     );
   }
 
@@ -84,8 +80,8 @@ class PomodoroNotifier extends Notifier<PomodoroState> {
       if (seconds <= 0) {
         timer.cancel();
 
-        // Reproducir sonido al finalizar
-        _soundService.playDing();
+        // Reproducir sonido al finalizar (a través de la abstracción)
+        _notificationService.playDing();
 
         state = state.copyWith(
           isRunning: false,
@@ -97,27 +93,6 @@ class PomodoroNotifier extends Notifier<PomodoroState> {
       state = state.copyWith(remainingSeconds: seconds);
     });
   }
-
-  // void start() {
-  //   if (state.isRunning) return;
-
-  //   state = state.copyWith(isRunning: true);
-
-  //   _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-  //     final seconds = state.remainingSeconds - 1;
-
-  //     if (seconds <= 0) {
-  //       timer.cancel();
-  //       state = state.copyWith(
-  //         isRunning: false,
-  //         remainingSeconds: 0,
-  //       );
-  //       return;
-  //     }
-
-  //     state = state.copyWith(remainingSeconds: seconds);
-  //   });
-  // }
 
   void pause() {
     _timer?.cancel();
@@ -132,18 +107,19 @@ class PomodoroNotifier extends Notifier<PomodoroState> {
     );
   }
 
-  void setSession(String type) {
+  void setSession(SessionType type) {
+    final settings = ref.read(settingsProvider);
     int seconds;
 
     switch (type) {
-      case SessionShortBreak:
-        seconds = 5 * 60;
+      case sessionShortBreak:
+        seconds = settings.shortBreakDuration * 60;
         break;
-      case SessionLongBreak:
-        seconds = 15 * 60;
+      case sessionLongBreak:
+        seconds = settings.longBreakDuration * 60;
         break;
       default:
-        seconds = 25 * 60;
+        seconds = settings.pomodoroDuration * 60;
     }
 
     _timer?.cancel(); // detener si está corriendo
@@ -158,4 +134,4 @@ class PomodoroNotifier extends Notifier<PomodoroState> {
 }
 
 final pomodoroProvider =
-    NotifierProvider<PomodoroNotifier, PomodoroState>(PomodoroNotifier.new);
+    NotifierProvider<PomodoroNotifier, Pomodoro>(PomodoroNotifier.new);
