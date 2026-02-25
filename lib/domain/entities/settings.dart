@@ -1,9 +1,10 @@
-// This file defines the Settings entity, which represents the user's preferences for the Pomodoro
-// timer, including durations for Pomodoro sessions, short breaks, and long breaks. The
-// Settings class includes validation to ensure that the durations are within
-// reasonable limits, and a copyWith method to facilitate state updates in the
-// SettingsProvider. This entity is used throughout the app to manage and persist user settings.
-
+/// Domain entity representing user-configurable timer settings.
+///
+/// This entity enforces its invariants at construction time,
+/// ensuring that all durations remain within allowed ranges.
+///
+/// It is immutable and provides value-based state updates via `copyWith`.
+/// No persistence or UI concerns are handled here.
 class Settings {
   final int pomodoroDuration;
   final int shortBreakDuration;

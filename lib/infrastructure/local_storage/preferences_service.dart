@@ -2,10 +2,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // This file implements the PreferencesService, which is responsible for managing
 // local storage of user preferences using the shared_preferences package.
-// It provides methods to save and retrieve settings such as the selected color,
-// dark mode preference, and durations for Pomodoro, short break, and long break sessions.
-// The PreferencesService is used by the PreferencesSettingsRepository
-// to persist user settings across app sessions.
 
 class PreferencesService {
   late SharedPreferences _prefs;

@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodoro_app/presentation/providers/timer_notifier.dart';
 
+// The SessionSelector widget provides buttons for selecting the current
+// session type (Pomodoro, Short Break, or Long Break).
+// It listens to the pomodoroProvider to determine the active session and updates
+// the UI accordingly.
+
 class SessionSelector extends ConsumerWidget {
   const SessionSelector({super.key});
 

@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodoro_app/presentation/providers/timer_notifier.dart';
 
+// The TimerDisplay widget shows the remaining time for the current Pomodoro session
+// in a circular progress indicator format. It listens to the pomodoroProvider to get
+// the current time and progress, and it updates the display accordingly.
+// The widget is designed to be responsive, adjusting its size based on the available space.
+
 class TimerDisplay extends ConsumerWidget {
   const TimerDisplay({super.key});
 

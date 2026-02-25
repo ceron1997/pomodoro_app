@@ -5,6 +5,9 @@ import 'package:pomodoro_app/presentation/providers/settings_provider.dart';
 import 'package:pomodoro_app/presentation/providers/theme_provider.dart';
 import 'package:pomodoro_app/presentation/widgets/drawer.dart';
 
+// The SettingsScreen allows users to customize their Pomodoro experience by changing
+// the theme and adjusting the durations for the Pomodoro timer and breaks.
+
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 

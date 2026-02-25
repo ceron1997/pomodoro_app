@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodoro_app/presentation/providers/timer_notifier.dart';
 
+// The PomodoroButtons widget provides the control buttons for the Pomodoro timer,
+// including Start, Pause, and Reset. It listens to the pomodoroProvider to control
+// the timer state when the buttons are pressed. The buttons are styled to match
+// the app's theme and provide a user-friendly interface for controlling the timer.
+
 class PomodoroButtons extends ConsumerWidget {
   const PomodoroButtons({super.key});
 

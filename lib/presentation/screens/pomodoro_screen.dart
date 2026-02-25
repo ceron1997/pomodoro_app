@@ -7,6 +7,9 @@ import 'package:pomodoro_app/presentation/widgets/session_selector.dart';
 import 'package:pomodoro_app/presentation/widgets/timer_display.dart';
 import 'package:pomodoro_app/presentation/widgets/pomodoro_buttons.dart';
 
+// The PomodoroScreen is the main screen that displays the Pomodoro timer, session selector,
+// and control buttons.
+
 class PomodoroScreen extends ConsumerWidget {
   const PomodoroScreen({super.key});
 

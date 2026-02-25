@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodoro_app/presentation/providers/navigation_provider.dart';
 
+// The DrawerWidget is a reusable widget that provides navigation options for the application.
+
 class DrawerWidget extends ConsumerWidget {
   const DrawerWidget({super.key});
 

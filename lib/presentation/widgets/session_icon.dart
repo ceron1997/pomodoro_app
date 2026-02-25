@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodoro_app/presentation/providers/timer_notifier.dart';
 
+// The SessionIcon widget displays an icon representing the current
+// session type (Pomodoro, Short Break, or Long Break).
+
 class SessionIcon extends ConsumerWidget {
   const SessionIcon({super.key});
 

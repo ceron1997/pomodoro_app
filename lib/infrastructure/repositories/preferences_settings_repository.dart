@@ -2,9 +2,8 @@ import 'package:pomodoro_app/domain/entities/settings.dart';
 import 'package:pomodoro_app/domain/repositories/settings_repository.dart';
 import 'package:pomodoro_app/infrastructure/local_storage/preferences_service.dart';
 
-// This file implements the PreferencesSettingsRepository, which is a concrete implementation
-// of the SettingsRepository interface. It uses the PreferencesService to persist user settings
-
+/// Concrete implementation of [SettingsRepository]
+/// backed by local storage (SharedPreferences).
 class PreferencesSettingsRepository implements SettingsRepository {
   final PreferencesService _prefs;
   PreferencesSettingsRepository(this._prefs);

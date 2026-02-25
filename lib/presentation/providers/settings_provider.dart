@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodoro_app/domain/entities/settings.dart';
 import 'package:pomodoro_app/domain/repositories/settings_repository.dart';
-import 'package:pomodoro_app/presentation/providers/settings_dependencies.dart.dart';
+import 'package:pomodoro_app/presentation/providers/settings_dependencies.dart';
 
 // This provider manages the app's settings state, including durations for Pomodoro,
 // short break, and long break sessions. It interacts with the

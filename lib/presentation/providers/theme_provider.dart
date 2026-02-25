@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodoro_app/config/theme/app_theme.dart';
 import 'package:pomodoro_app/infrastructure/local_storage/preferences_service.dart';
-import 'package:pomodoro_app/presentation/providers/settings_dependencies.dart.dart';
+import 'package:pomodoro_app/presentation/providers/settings_dependencies.dart';
 
 // This provider manages the app's theme state,
 // including the selected color and dark mode preference.
