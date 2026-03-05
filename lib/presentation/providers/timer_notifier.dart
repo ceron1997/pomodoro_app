@@ -71,27 +71,46 @@ class PomodoroNotifier extends Notifier<Pomodoro> {
 
   void start() {
     if (state.isRunning) return;
+    final endTime =
+        DateTime.now().add(Duration(seconds: state.remainingSeconds));
+    state = state.copyWith(isRunning: true, endTime: endTime);
 
-    state = state.copyWith(isRunning: true);
+    _startTicker();
+  }
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      final seconds = state.remainingSeconds - 1;
+  void _startTicker() {
+    _timer?.cancel();
 
-      if (seconds <= 0) {
-        timer.cancel();
-
-        // Reproducir sonido al finalizar (a través de la abstracción)
-        _notificationService.playDing();
-
-        state = state.copyWith(
-          isRunning: false,
-          remainingSeconds: 0,
-        );
-        return;
-      }
-
-      state = state.copyWith(remainingSeconds: seconds);
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      _recalculateRemaining();
     });
+  }
+
+  void _recalculateRemaining() {
+    if (state.endTime == null) return;
+
+    final difference = state.endTime!.difference(DateTime.now()).inSeconds;
+
+    if (difference <= 0) {
+      _timer?.cancel();
+
+      _notificationService.playDing();
+
+      state = state.copyWith(
+        remainingSeconds: 0,
+        isRunning: false,
+        endTime: null,
+      );
+
+      return;
+    }
+
+    state = state.copyWith(remainingSeconds: difference);
+  }
+
+  void recalculateOnResume() {
+    if (!state.isRunning) return;
+    _recalculateRemaining();
   }
 
   void pause() {

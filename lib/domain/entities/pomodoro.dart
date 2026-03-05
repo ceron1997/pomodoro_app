@@ -16,13 +16,14 @@ class Pomodoro {
   final int remainingSeconds;
   final bool isRunning;
   final SessionType sessionType;
+  final DateTime? endTime;
 
-  const Pomodoro({
-    required this.totalSeconds,
-    required this.remainingSeconds,
-    required this.isRunning,
-    required this.sessionType,
-  });
+  const Pomodoro(
+      {required this.totalSeconds,
+      required this.remainingSeconds,
+      required this.isRunning,
+      required this.sessionType,
+      this.endTime});
 
   double get progress => 1 - (remainingSeconds / totalSeconds);
 
@@ -37,12 +38,14 @@ class Pomodoro {
     int? remainingSeconds,
     bool? isRunning,
     SessionType? sessionType,
+    DateTime? endTime,
   }) {
     return Pomodoro(
       totalSeconds: totalSeconds ?? this.totalSeconds,
       remainingSeconds: remainingSeconds ?? this.remainingSeconds,
       isRunning: isRunning ?? this.isRunning,
       sessionType: sessionType ?? this.sessionType,
+      endTime: endTime ?? this.endTime,
     );
   }
 }
